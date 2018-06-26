@@ -25,6 +25,7 @@ def login(username, password):
     username_field.send_keys(username)
     password_field.send_keys(password)
     submit.click()
+
     return;
 
 # logging in - enter credentials
