@@ -27,7 +27,7 @@ def login(username, password):
     submit.click()
     return;
 
-# logging in
+# logging in - enter credentials
 login("","")
 
 
@@ -53,7 +53,7 @@ def search(criteria, search_type, username):
         else:
             search_url = search_url + '/' + criteria
 
-        print(search_url)
+        print('Performing search...' + search_url)
         driver.get(search_url)
 
     except TimeoutException:
@@ -63,4 +63,5 @@ def search(criteria, search_type, username):
     return;
 
 
+# enter inputs here to test
 search("Tiger woods", "hashtag", "ryanmonroe");
