@@ -10,8 +10,8 @@ driver.get("https://www.instagram.com/accounts/login/");
 
 # function to log user in
 def login(username, password, submit):
-    username.send_keys("ryanmonroe");
-    password.send_keys("Rm9901810");
+    username.send_keys("");
+    password.send_keys("");
     submit.click();
     return;
 
