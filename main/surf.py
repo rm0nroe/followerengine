@@ -29,7 +29,7 @@ def login(username, password):
     return;
 
 # logging in - enter credentials
-login("","")
+login("ryanmonroe","Rm9901810")
 
 
 # performs search of hashtags, places or users
@@ -64,5 +64,55 @@ def search(criteria, search_type, username):
     return;
 
 
+def scan_posts(criteria):
+    criteria = criteria.replace(" ", "").lower()
+    posts = driver.find_elements_by_xpath("//a[@href]")
+    for post in posts:
+        matcher = "tagged="+criteria
+        if matcher in post.get_attribute("href"):
+            print(post.get_attribute("href"))
+            like_post(post)
+    return;
+
+
+def like_post(post):
+    driver.get(post.get_attribute("href"))
+    like_xpath = "//a[@role='button']/span[text()='Like']/.."
+    unlike_xpath = "//a[@role='button']/span[text()='Unlike']"
+    spans = [x.text.lower() for x in driver.find_elements_by_xpath("//article//a[@role='button']/span")]
+
+    if 'like' in spans:
+        like_elem = driver.find_elements_by_xpath(like_xpath)
+
+        # sleep real quick right before clicking the element
+        # sleep(2)
+        # click_element(driver, like_elem[0])
+        like_elem[0].click()
+        # check now we have unlike instead of like
+        liked_elem = driver.find_elements_by_xpath(unlike_xpath)
+        if len(liked_elem) == 1:
+            print("like succeeded")
+            # logger.info('--> Image Liked!')
+            # update_activity('likes')
+            # if blacklist['enabled'] is True:
+            #     action = 'liked'
+            #     add_user_to_blacklist(
+            #         username, blacklist['campaign'], action, logger, logfolder
+            #     )
+            # sleep(2)
+            return True;
+        else:
+            # if like not seceded wait for 2 min
+            # logger.info('--> Image was not able to get Liked! maybe blocked ?')
+            # sleep(120)
+            print('put sleep here')
+    else:
+        liked_elem = driver.find_elements_by_xpath(unlike_xpath)
+        if len(liked_elem) == 1:
+            print("like not in spans")
+    return False
+
+
 # enter inputs here to test
-search("Tiger woods", "hashtag", "ryanmonroe");
+search("Tiger woods", "hashtag", "ryanmonroe")
+scan_posts("Tiger woods")
