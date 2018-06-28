@@ -29,7 +29,7 @@ def login(username, password):
     return;
 
 # logging in - enter credentials
-login("ryanmonroe","Rm9901810")
+login("","")
 
 
 # performs search of hashtags, places or users
@@ -66,17 +66,19 @@ def search(criteria, search_type, username):
 
 def scan_posts(criteria):
     criteria = criteria.replace(" ", "").lower()
+    matcher = "tagged=" + criteria
+    hrefs = []
     posts = driver.find_elements_by_xpath("//a[@href]")
     for post in posts:
-        matcher = "tagged="+criteria
         if matcher in post.get_attribute("href"):
-            print(post.get_attribute("href"))
-            like_post(post)
-    return;
+            hrefs.append(post.get_attribute("href"))
+
+    return hrefs;
 
 
-def like_post(post):
-    driver.get(post.get_attribute("href"))
+def like_post(links):
+    for link in links:
+        driver.get(link)
     like_xpath = "//a[@role='button']/span[text()='Like']/.."
     unlike_xpath = "//a[@role='button']/span[text()='Unlike']"
     spans = [x.text.lower() for x in driver.find_elements_by_xpath("//article//a[@role='button']/span")]
@@ -113,6 +115,9 @@ def like_post(post):
     return False
 
 
+
 # enter inputs here to test
 search("Tiger woods", "hashtag", "ryanmonroe")
-scan_posts("Tiger woods")
+like_post(scan_posts("Tiger woods"))
+# need to add functionality to check whether a photo has already been liked
+# need to add list of like photos to check against
